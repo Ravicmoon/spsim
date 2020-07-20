@@ -56,16 +56,7 @@ INSTALL(TARGETS spsim image_integrate box_deconvolute
 	LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
-# PYTHON WRAPPER
-# --------------
-# handle the QUIETLY and REQUIRED arguments and set PYTHONINTERP_FOUND to TRUE if
-# all listed variables are TRUE
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(PythonInterp DEFAULT_MSG PYTHON_EXECUTABLE)
-
-MARK_AS_ADVANCED(PYTHON_EXECUTABLE)
-if(PYTHONLIBS_FOUND AND SWIG_FOUND AND PYTHONINTERP_FOUND AND PYTHON_NUMPY_FOUND)
-  #MESSAGE("numpy found compiling python wrappers")
+if(PYTHON_FOUND AND PYTHON_NUMPY_FOUND AND SWIG_FOUND)
   FILE(GLOB spsim_headers "${CMAKE_CURRENT_SOURCE_DIR}/../include/*.h")
   add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/spsim_wrap.c COMMAND ${SWIG_EXECUTABLE} -python -outcurrentdir -I${SPIMAGE_INCLUDE_DIR} -o ${CMAKE_CURRENT_BINARY_DIR}/spsim_wrap.c ${CMAKE_CURRENT_SOURCE_DIR}/spsim_pybackend.i DEPENDS ${spsim_headers} ${CMAKE_CURRENT_SOURCE_DIR}/spsim_pybackend.i)
   INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH} ${PYTHON_NUMPY_INCLUDE_DIR})
